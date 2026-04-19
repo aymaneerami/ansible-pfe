@@ -1,0 +1,31 @@
+---
+- hosts: loadbalancer
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: "Step 1: Install NGINX"
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: "Step 2: Configure Load Balancer"
+      copy:
+        dest: /etc/nginx/sites-available/default
+        content: |
+          upstream my_web_cluster {
+              server 192.168.56.11;
+              server 192.168.56.12;
+          }
+
+          server {
+              listen 80;
+              location / {
+                  proxy_pass http://my_web_cluster;
+              }
+          }
+
+    - name: "Step 3: Restart NGINX to apply settings"
+      service:
+        name: nginx
+        state: restarted

@@ -1,0 +1,41 @@
+---
+- hosts: web_servers
+  become: yes
+  tasks:
+    # 1. مسح Nginx باش ما يوقعش Conflit فالبورت 80
+    - name: "Step 1: Stop and Remove Nginx"
+      apt:
+        name: nginx
+        state: absent
+        purge: yes
+
+    # 2. تثبيت Apache و PHP
+    - name: "Step 2: Install Apache and PHP"
+      apt:
+        name: ['apache2', 'php', 'libapache2-mod-php']
+        state: latest
+        update_cache: yes
+
+    # 3. إنشاء صفحة PHP لي غتبين سمية السيرفور (طريقة مفرقة باش ما يتقطعش السطر)
+    - name: "Step 3: Create your PHP page"
+      copy:
+        dest: /var/www/html/index.php
+        content: |
+          <?php 
+          echo "<h1>Hello Ayman!</h1>";
+          echo "<p>Running on server: " . gethostname() . "</p>"; 
+          echo "<p>IP Address: " . $_SERVER['SERVER_ADDR'] . "</p>";
+          ?>
+
+    # 4. حذف الصفحة الافتراضية index.html باش تبان لينا index.php
+    - name: "Step 4: Clean up default index"
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    # 5. تشغيل وتفعيل Apache باش يبدا مع شعلة الماكينة
+    - name: "Step 5: Make sure Apache is Up"
+      service:
+        name: apache2
+        state: started
+        enabled: yes
