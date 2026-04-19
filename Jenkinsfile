@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Deploy Web Servers') {
             steps {
-                // استعملنا /usr/bin/ansible-playbook باش Jenkins يلقاه
+               
                 sh '/usr/bin/ansible-playbook -i hosts apache_php.yml -u ansible'
             }
         }
