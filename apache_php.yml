@@ -20,7 +20,14 @@
     - name: "Step 3: Create your PHP page"
       copy:
         dest: /var/www/html/index.php
-        content: "<?php echo '<h1>Welcome to PFE Project - Server: ' . gethostname() . '</h1>'; ?>"
+        content: |
+          <?php
+          echo "<div style='text-align: center; margin-top: 50px; font-family: Arial;'>";
+          echo "<h1>Hello Aymane</h1>";
+          echo "<h3>Hostname: " . gethostname() . "</h3>";
+          echo "<h3>IP Address: {{ ansible_host }}</h3>";
+          echo "</div>";
+          ?>
 
     - name: "Step 4: Clean up default index"
       file:
