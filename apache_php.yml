@@ -1,35 +1,33 @@
 ---
-- hosts: web_servers
+- name: Deploy Apache and PHP
+  hosts: web_servers
   become: yes
   tasks:
-       - name: "Step 1: Stop and Remove Nginx"
+    - name: "Step 1: Stop and Remove Nginx"
       apt:
         name: nginx
         state: absent
-        purge: yes
 
-       - name: "Step 2: Install Apache and PHP"
+    - name: "Step 2: Install Apache and PHP"
       apt:
-        name: ['apache2', 'php', 'libapache2-mod-php']
-        state: latest
+        name: 
+          - apache2
+          - php
+          - libapache2-mod-php
+        state: present
         update_cache: yes
 
-       - name: "Step 3: Create your PHP page"
+    - name: "Step 3: Create your PHP page"
       copy:
         dest: /var/www/html/index.php
-        content: |
-          <?php 
-          echo "<h1>Hello Kolchi!</h1>";
-          echo "<p>Running on server: " . gethostname() . "</p>"; 
-          echo "<p>IP Address: " . $_SERVER['SERVER_ADDR'] . "</p>";
-          ?>
+        content: "<?php echo '<h1>Welcome to PFE Project - Server: ' . gethostname() . '</h1>'; ?>"
 
-       - name: "Step 4: Clean up default index"
+    - name: "Step 4: Clean up default index"
       file:
         path: /var/www/html/index.html
         state: absent
 
-       - name: "Step 5: Make sure Apache is Up"
+    - name: "Step 5: Make sure Apache is Up"
       service:
         name: apache2
         state: started
