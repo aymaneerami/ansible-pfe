@@ -23,7 +23,7 @@
         content: |
           <?php
           echo "<div style='text-align: center; margin-top: 50px; font-family: Arial;'>";
-          echo "<h1>Hello Aymane</h1>";
+          echo "<h1>Hello Nidae</h1>";
           echo "<h3>Hostname: " . gethostname() . "</h3>";
           echo "<h3>IP Address: {{ ansible_host }}</h3>";
           echo "</div>";
@@ -39,3 +39,4 @@
         name: apache2
         state: started
         enabled: yes
+
