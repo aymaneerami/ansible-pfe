@@ -23,7 +23,7 @@
         content: |
           <?php
           echo "<div style='text-align: center; margin-top: 50px; font-family: Arial;'>";
-          echo "<h1>Bonjorno </h1>";
+          echo "<h1>Hello everybody </h1>";
           echo "<h3>Hostname: " . gethostname() . "</h3>";
           echo "<h3>IP Address: {{ ansible_host }}</h3>";
           echo "</div>";
